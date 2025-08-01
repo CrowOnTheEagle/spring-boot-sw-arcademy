@@ -1,0 +1,30 @@
+CI/CD = 지속적인 통합/배포
+
+코드작성(GIT과 동기화) -> jar파일 생성 -> 배포(AWS/개인서버)
+
+도커
+    - 시스템과 상관없이 배포가 가능하게 하는 프로그램
+    - git -----(이미지 배포)-----> docker
+    - 컨테이너
+        * 배포된 파일
+
+git
+    - 책 4장까지만 참고
+
+젠킨스(jenkins)
+    - CI/CD 툴
+
+K8S(Kubernetes, 쿠버네티스)
+    - 여러 컨테이너들을 쉽게 관리하게 도와주는 툴
+    - 복잡하고 큰 환경에 쓰임
+
+argoCD
+    - git 배포 기반의 gitops 도구
+
+Spring != Spring boot
+
+spring boot는 tomcat 서버를 내장하고 있음
+/src/resources/application.properties에서 속성 수정
+
+터널링
+    - 외부에서 공용 IP로 접근 가능하게 하는것
