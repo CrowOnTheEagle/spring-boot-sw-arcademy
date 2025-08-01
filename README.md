@@ -73,7 +73,7 @@ This Message is from README.md which automatically created by java console app p
    * spring boot devtools - 코드 저장 후 자동실행
 
 ## 실습실 IP
- * 공통: 220.110.33
+ * 공통: 210.110.33
  * 208 209 210 211    212 213 214 215
  * 216 217 218 219    220 221 222 223
  * 224 225 226 227    228 229 230 231(나)

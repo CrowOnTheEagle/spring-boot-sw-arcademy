@@ -1,4 +1,4 @@
-package FIle250731;
+package Study.FIle250731;
 public class Sample {
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");

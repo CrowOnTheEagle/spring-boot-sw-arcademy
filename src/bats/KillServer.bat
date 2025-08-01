@@ -1,0 +1,1 @@
+netstat -ano | find "LISTEN" | find ":8081" > result.txt
