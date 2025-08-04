@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @SpringBootApplication
 // 웹 브라우저에 리턴된 문자열을 출력
@@ -13,7 +15,12 @@ public class SpringBootSwArcademyApplication {
 	// @GetMapping에서 지정한 경로에 접근 시 함수 호출함
 	// The function will be called when the user access specific URL/path
 	// defined by the @GetMapping annotation.
-	@GetMapping("/")
+	@GetMapping("/Time")
+	public String MainPage() {
+		return "20250804-171508-test01\n";
+	}
+	
+	@GetMapping("/Main")
 	public String PrintMain() {
 		return "이 페이지는 메인 홈페이지 입니다.\nThis page is Main page";
 	}
