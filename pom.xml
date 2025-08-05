@@ -20,6 +20,12 @@
 	<developers>
 		<developer/>
 	</developers>
+	<configuration>
+		<additionalClasspathElements>
+			<additionalClasspathElement>/.github/workflows</additionalClasspathElement>
+			<additionalClasspathElement>/Study</additionalClasspathElement>
+		</additionalClasspathElements>
+  	</configuration>
 	<scm>
 		<connection/>
 		<developerConnection/>
@@ -55,6 +61,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<sourceDirectory>C:\spring-boot-sw-arcademy\.github\workflows</sourceDirectory>
 	</build>
 
 </project>

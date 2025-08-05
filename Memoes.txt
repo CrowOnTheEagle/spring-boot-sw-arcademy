@@ -1,3 +1,5 @@
+과제 수행 시 추가 기능이 중요
+
 용어
 1. CI/CD
     - 지속적인 통합/배포
@@ -7,6 +9,9 @@
     - 특정 포트로 들어오면 연결시켜 주는것
 4. Annotation
     - @(어노테이션 이름)
+5. git actions
+    - 깃에서 작업하는 것
+    - push 되는 순간 작동함
 
 
 도구
@@ -16,26 +21,37 @@
     - jar -> 이미지화 -> 도커 업로드 -> 다른 디바이스에서 이미지 다운로드
     - https://hub.docker.com/explore 에서 이미지를 찾음
     - 이미지
-    * 가상 CD로, CD 안의 프로그램을 설치해야 함
+        * 가상 CD로, CD 안의 프로그램을 설치해야 함
     - 컨테이너
-    * 배포된 파일, 직접 실행하는 프로그램
-    * jar파일 실행을 위한 가상OS(리눅스)가 있음
-    * 해당 OS로의 포트포워딩 필요
+        * 배포된 파일, 직접 실행하는 프로그램
+        * jar파일 실행을 위한 가상OS(리눅스)가 있음
+        * 해당 OS로의 포트포워딩 필요
     - 도커 명령어 실행을 위해선 도커 프로그램이 켜져 있어야 함
     - 명령어
-    * docker run: 이미지 실행
-    * docker build -t (계정ID이름)/(이미지이름):(버전) .: 이미지 생성
-    * docker images: 이미지 확인
-    * docker rmi [-f] (이미지ID): 이미지 삭제(-f시 컨테이너까지 삭제)
-    * docker push (이미지이름): 이미지 올리는 명령어
-    * docker pull (이미지이름): 이미지 받는 명령어
-    * docker run --name (컨테이너이름) -dp (포트번호):(포트번호) (계정명)/(배포 이미지 이름):(버전): 이미지 실행
-        # -d: 백그라운드에서 실행
-        # -p: 포트번호 설정
-    * docker ps: 실행중인 컨테이너 목록 확인
+        * docker run: 이미지 실행
+        * docker build -t (계정ID이름)/(이미지이름):(버전) .: 이미지 생성
+        * docker images: 이미지 확인
+        * docker rmi [-f] (이미지ID): 이미지 삭제(-f시 컨테이너까지 삭제)
+        * docker push (이미지이름): 이미지 올리는 명령어
+        * docker pull (이미지이름): 이미지 받는 명령어
+        * docker run --name (컨테이너이름) -dp (포트번호):(포트번호) (계정명)/(배포 이미지 이름):(버전): 이미지 실행
+            # -d: 백그라운드에서 실행
+            # -p: 포트번호 설정
+        * docker ps: 실행중인 컨테이너 목록 확인
+    - 도커에 이미지를 올리는 것이 CI
 2. git
     - 형상관리 툴
     - 책 4장까지만 참조
+    - git bash 터미널 명령어
+    - 계정을 두 명이 동시에 쓸 수 없음
+    - 명령어
+        * git config --global user.email (깃허브 이메일)
+            # 이메일 설정
+        * git config --global user.name (깃허브 유저 이름)
+            # 유저 이름 설정
+        * git config --global --list 
+            # 전역 변수 확인
+            # 윈도우의 자격 증명 관리자 -> windows 자격 증명에서도 확인 가능함
 3. 젠킨스(jenkins)
     - CI/CD 툴
 4. K8S(Kubernetes, 쿠버네티스)
@@ -47,6 +63,18 @@
     - Spring Boot와는 다름
     - Tomcat이 내장되어 있음
     - /src/resources/application.properties에서 톰캣 관련 속성 수정
+    - 생성 방법
+        * f1 -> spring initalizer
+        * 버전 3.5.4
+        * 언어 자바
+        * group id: 프로젝트 식별용 그룹 or 패캐지 이름
+        * artifact id: 프로젝트 식별자
+        * packaging type jar
+        * java version 17
+        * 의존성(sw 아카데미용)
+            # spring boot devtool
+            # spring web
+        * 프로젝트 저장 경로 선택
 7. Mobaxterm
     - 리눅스 서버 원격접속 툴
     - https://mobaxterm.mobatek.net/download-home-edition.html
@@ -67,6 +95,41 @@
         * 파워쉘 -> ssh-keygen -> 엔터 세번 -> C:\Users\Administrator\.ssh에 id_파일 2개가 생성
         * 확장자 없는게 개인키, .pub파일이 공개키
         * type %USERPROFILE%\.ssh\id_ed25519.pub | ssh blizkrig553@localhost "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
+11. sourcetree
+    - git gui
+    - https://www.sourcetreeapp.com/ 에서 다운
+    - 설치
+        * bitbucket은 스킵 -> mercurial 체크 해제 -> 깃허브 이름/이메일 자동입력되어 있음(안돼있으면 직접 입력) -> ssh 키 아니오(안불러오기)
+        * 앱 열기 -> 원격 -> 계정추가 -> 아래 정보 입력
+            # 호스팅 github
+            # 선호 프로토콜 https
+            # 인증 oauth
+            # oauth 토큰 새로고침 클릭해 깃허브와 연돌
+            # 연동 성공 시 인증 성공이라고 뜸
+        * 확인 누르면 깃헙과 연동이 됨
+    - 레포지토리 생성
+        * 생성 -> 깃허브에 업로드 할 폴더 경로 입력 -> 이미 있는 폴더라고 뜨면 yes 누름 -> 생성 완료
+    - 브랜치 옆에 동그라미 표시가 있는 곳이 현재 헤드
+    - 사용법
+        * 업로드 필요한 파일 스테이지에 업로드 -> 커밋 내용 입력 -> 커밋
+            # 스테이지에 올라가지 않은 모든 파일은 git에 업로드 되지 않음
+        * 기존 레포지토리와 연결
+            # 레포지토리를 git 홈페이지에서 생성 후 소스트리에서 설정 -> 원격 -> 추가 -> 디폴트 원격 클릭 -> 생성된 리포지토리 링크를 URL/경로에 입력 -> 확인
+        * 푸시
+            # push -> 브랜치 선택 후 push
+        * 클론
+            # 클론 -> 깃 주소 입력 -> 목적지 경로에 저장할 폴더 입력
+        * 이전 버전으로 되돌리기
+            # history탭에서 되돌리고 싶은 버전 더블클릭
+        * 브랜치
+            # 분기하고 싶은 버전에 우클릭 -> 브랜치 -> 새 브랜치 이름 입력하고 생성
+        * 병합
+            # 병합하는쪽에 헤더를 위치 -> 병합할 분기 우클릭 -> 병합 -> fastfoward 체크 -> 병합
+    - 기존 레포지토리 추가
+        * 추가 -> 작업경로에 기존에 작업하던 레포지토리 위치 추가 -> 추가 버튼 클릭
+12. 메이븐
+    - 자바 프로젝트 관리도구
+    - https://mvnrepository.com/ 에서 의존성(dependancy) 다운
 
 
 VSCode에서 메이븐 빌드 방법
@@ -74,6 +137,9 @@ VSCode에서 메이븐 빌드 방법
     - maven 확장 설정을 아래와 같이 적용
         * user settings의 경로를 (다운받은 메이븐 폴더)/conf/settings.xml 위치로 설정
         * excuteable path를 mvn.cmd 혹은 mvnw(.cmd) 파일 위치로 설정
+        * 혹은 settings.json 파일에 아래 내용 추가
+            # "java.configuration.maven.userSettings": "C:\\spring-boot-sw-arcademy\\apache-maven\\conf\\settings.xml",
+            # "maven.executable.path": "C:\\spring-boot-sw-arcademy\\mvnw",
     - 익스플로러 창에 maven 항목 띄우기
     - 프로젝트 우클릭 -> run maven commands -> install
     - jar 파일 위치: root/target/(프로젝트명).jar
@@ -131,3 +197,55 @@ services:
     ## determin run docker when linux started
     restart: always
 - docker compose pull && docker compose up -d
+
+
+깃헙 토큰 발급
+    - 내 프로필 클릭 -> 세팅 -> developer settings -> personal access tokens -> Tokens(classic) -> generate new token -> New personal access token (classic)
+    - 아래 정보 입력
+        * Note: 토큰 제목, 토큰 생성 목적 입력
+        * expiration: 토큰 종료 날짜
+        * Select scopes: 토큰의 허용 범위
+            # repo: 레포지토리 관련 허용 범위
+            # admin:repo_hook
+            # delete_repo: 레포지토리를 터미널에서 원격 삭제 가능 여부
+    - 필요한 설정 후 generate token -> 생성된 토큰 복사 후 잘 저장
+
+
+도커 토큰 발급
+    - 도커 홈페이지 -> 프로필 클릭 -> account settings -> personal access tokens -> generate new token
+    - 아래 정보 입력
+        * access token description: 토큰 생성 목적
+        * expiration date: 토큰 종료 날짜
+        * access permission: 토큰의 허용 범위(보통 read write)
+    - 설정 후 generate -> 생성된 토큰 복사 후 저장
+
+
+깃허브 다른 유저 추가
+    - 레포지토리 -> settings -> collaborators -> add people -> 유저 찾아서 클릭 -> add to repository
+
+
+이클립스 내 깃허브 연동
+    - 깃허브에 적용할 레포지토리가 깃허브에 있어야 함
+    - 프로젝트 우클릭 -> team -> share project -> use or create..... 체크박스 체크 -> 프로젝트 옆 체크박스 체크 -> create repository 체크박스 체크 -> create repository 클릭 -> 완료
+    - window -> show view -> other... -> git -> git staging으로 깃 ui 표시
+    - ++버튼 누르면 모든 변경사항들이 stage로 들어감
+    - 커밋 메세지 입력 후 commit 또는 commit and push
+        * 처음에는 커밋만 해서 주소 설정 들을 해야 함
+    - 초기 git 환경설정(첫 푸시)
+        * commit -> author와 committer 확인 -> push HEAD -> 아래 설정 입력
+            # remote name에 main
+            # url에 생성된 레포지토리 입력
+                & 입력하면 host, repository path, protocol(https)가 자동으로 선택됨
+            # user에 유저이름 입력
+            # password에 깃허브 토큰 입력
+            # store in secure store 체크박스 체크
+        * preview -> preview -> push
+
+깃에서 jar 파일 빌드
+    - 사전 설정
+        * 레포지토리 -> settings -> actions -> general -> workflow permissions탭 -> read and write permissions 선택 -> allow gitbut actiosn... 체크박스 체크(액션 작동하면서 pull 리퀘스트 가능하게 할건지) -> save
+    - 레포지토리가 저장된 폴더에 .gihub/workflows 폴더 생성 후 ci.yml 파일 생성
+    - 이클립스의 경우
+        * 프로젝트 우클릭 -> properties -> java build path -> source 탭 선택 -> add folder -> 
+    - ci.yml 파일에 아래 내용 추가
+    
