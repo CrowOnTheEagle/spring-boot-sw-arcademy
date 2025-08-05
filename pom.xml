@@ -20,12 +20,6 @@
 	<developers>
 		<developer/>
 	</developers>
-	<configuration>
-		<additionalClasspathElements>
-			<additionalClasspathElement>/.github/workflows</additionalClasspathElement>
-			<additionalClasspathElement>/Study</additionalClasspathElement>
-		</additionalClasspathElements>
-  	</configuration>
 	<scm>
 		<connection/>
 		<developerConnection/>
