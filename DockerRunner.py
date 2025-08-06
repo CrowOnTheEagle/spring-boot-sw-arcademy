@@ -29,19 +29,23 @@ python ./(python file name) [-flags]
               Once built, connect to the Linux server using SSH, then run the Docker container.""")
     sys.exit()
 
-VERSION = input("빌드 버전 입력(Please enter the build version): ")
+VERSION = input("빌드 버전 입력(Enter the build version): ")
+USER_NAME = input("도커 유저 이름 입력(Enter the docker user name): ")
+IMAGE_NAME = input("이미지 이름 입력(Enter the docker image name): ")
 
 os.system("cd C:/spring-boot-sw-arcademy")
 os.system("mvnw.cmd clean package")
 
 os.system("cd ./taget")
-os.system(f"docker build -t crowontheeagle/spring01-service:{VERSION} .")
-os.system(f"docker push crowontheeagle/spring01-service:{VERSION}")
+os.system(f"docker build -t {USER_NAME}/{IMAGE_NAME}:{VERSION} .")
+os.system(f"docker push {USER_NAME}/{IMAGE_NAME}:{VERSION}")
 
 if(DockerRun):
     ## answer = input("도커 컨테이너를 실행하시겠습니까?(Do you want run docker container?)(Y/N): ")
     ##if(answer == 'y' or answer == 'Y'):
     if("-linux" in sys.argv or "-l" in sys.argv):
-        os.system(f"ssh blizkrig553@localhost \"cd /home/blizkrig553/Spring01 && docker compose pull && docker compose up -d\"")
+        HOST_NAME = input("접속할 호스트 이름 입력(Enter the host's name): ")
+        IP_DEST = input("접속할 호스트 주소 입력(Enter the host's ip): ")
+        os.system(f"ssh {HOST_NAME}@{IP_DEST} \"cd /home/{HOST_NAME}/Spring01 && docker compose pull && docker compose up -d\"")
     else:
-        os.system(f"docker run --name TestContainer -dp 8081:8081 crowontheeagle/spring01-service:{VERSION}")
+        os.system(f"docker run --name TestContainer -dp 8081:8081 {USER_NAME}/{IMAGE_NAME}:{VERSION}")

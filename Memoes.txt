@@ -248,4 +248,12 @@ services:
     - 이클립스의 경우
         * 프로젝트 우클릭 -> properties -> java build path -> source 탭 선택 -> add folder -> 
     - ci.yml 파일에 아래 내용 추가
-    
+
+
+깃허브 action의 secrets 설정
+    - action파일에 직접적으로 아이디/비밀번호를 입력할 수 없으니 secrets을 설정해 아이디/비밀번호를 감춤
+    - 레포지토리 -> settings -> secrets and variables -> actions -> new repository secret -> 아래 정보 입력
+        * name에 시크릿 이름
+        * secret에 시크릿 내용(password의 경우 토큰)
+    - add secret 눌러 종료
+    - 레포지토리마다 설정해줘야 함
