@@ -1,0 +1,3 @@
+docker pull crowontheeagle/spring01-service:latest
+
+docker run --name TestContainer -dp 8081:8081 crowontheeagle/spring01-service:latest

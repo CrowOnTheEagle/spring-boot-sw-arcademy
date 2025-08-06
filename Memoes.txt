@@ -5,13 +5,15 @@
     - 지속적인 통합/배포
 2. 터널링
     - 외부에서 공용 IP로 접근 가능하게 하는것
+    - 공용 IP는 외부 IP로 연결, 조작하고자 하는 컴퓨터는 외부 IP로 연결해 공용 IP 사용
+    - TCP/SSH 터널링
+        * 컴퓨터까지 조작하는 터널링
+    - http 터널링
+        * http에서 사용
 3. 포트 포워딩
     - 특정 포트로 들어오면 연결시켜 주는것
 4. Annotation
     - @(어노테이션 이름)
-5. git actions
-    - 깃에서 작업하는 것
-    - push 되는 순간 작동함
 
 
 도구
@@ -52,8 +54,60 @@
         * git config --global --list 
             # 전역 변수 확인
             # 윈도우의 자격 증명 관리자 -> windows 자격 증명에서도 확인 가능함
+    - actions
+        * 깃 내에서 자동으로 작업하는 것
+        * .github/workflows/ci.yml 파일 필요
+        * push되는 순간 작동
+    - 깃허브 actions로 내 리눅스의 ssh에 접속 가능
+        * 하지만 학교는 방화벽으로 막혀있어 사용불가
+        * 해결법
+            # ssh 터널링 이용
+            # 대표적인 사이트: serveo, ngrok
 3. 젠킨스(jenkins)
     - CI/CD 툴
+    - 리눅스에서 설치
+        * sudo apt update && sudo apt install -y openjdk-17-jdk
+            # 자바 설치(설치되어 있으면 스킵)
+        * curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \ /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+            # 젠킨스 공식 홈페이지에서 인증키 받아옴
+            # 성공 시 출력 없음
+        * echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \ https://pkg.jenkins.io/debian-stable binary/ | sudo tee \ /etc/apt/sources.list.d/jenkins.list > /dev/null
+            # 젠킨스 패캐지를 받아올 곳을 설정
+            # 성공 시 출력 없음
+        * sudo apt update && sudp apt install -y jenkins
+            # 젠킨스 설치
+        * sudo systemctl enable jenkins && sudo systemctl start jenkins
+            # 시스템 시작 시 젠킨스 자동실행
+            # sudo systemctl status jenkins
+                & 젠킨스 상태 확인
+                & active: active면 돌아가는 중
+    - 윈도우에서 설치
+        * https://www.jenkins.io/download/ 에서 설치 파일 다운로드
+    - 젠킨스 언락
+        * 브라우저에서 (언락하려는 곳의 주소):8080 에 접속
+        * 빨간줄 내 주소 복사하고 sudo cat /var/lib/jenkins/secrets/initialAdminPassword 를 입력해 비밀번호 찾아냄
+        * 비밀번호를 복사해 입력
+        * install all plugins 선택해 모든 플러그인 설치
+        * 어드민 계정 입력
+            # 계정명, 비밀번호, 이름, 이메일
+        * save and continue
+        * 주소 저장 후 save and finish
+    - 젠킨스 접속
+        * (젠킨스가 켜져있는 서버 주소):8080으로 접속 시 사용 가능
+        * 로그인은 언락 시 설정한 계정명, 비밀번호 입력
+    - 작업추가
+        * 새로운 item 클릭 -> 아이템 이름 입력 -> 아이템 타입 선택 -> OK
+            # 프리스타일: 튜토리얼에서 씀
+            # 파이프라인: 자주 쓰임
+    - 작업 설정
+        * 아이템 -> configuration -> pipeline -> definition을 pipeline script from scm으로 변경 -> SCM을 git으로 변경 -> git repository 주소를 복사해 repository URL에 입력
+            # 유효한 주소면 아무것도 안뜸
+            # 유효하지 않으면 빨간 글씨로 오류가 뜸
+        * credentials은 none으로 변경 -> branch specifier을 main으로 변경 -> script path에 젠킨스 실행용 파일 지정(보통 놔둠) -> save
+            # jenkinsfile은 레포지토리 폴더 최상단에 생성
+    - 작업 수동 시작
+        * 아이템에 들어와서 지금 빌드 클릭
+        * stage에서 현재 실행중인 단계 확인 가능
 4. K8S(Kubernetes, 쿠버네티스)
     - 여러 컨테이너들을 쉽게 관리하게 도와주는 툴
     - 복잡하고 큰 환경에 쓰임
@@ -92,9 +146,13 @@
     - ssh blizkrig553@localhost -p 22
     - 리눅스에서 포트포워딩 필요
     - 비밀번호 입력 스킵방법
-        * 파워쉘 -> ssh-keygen -> 엔터 세번 -> C:\Users\Administrator\.ssh에 id_파일 2개가 생성
+        * 파워쉘/bash -> ssh-keygen -> 엔터 세번 -> 아래 위치에 id_파일 2개가 생성
+            # 윈도우 - C:\Users\Administrator\.ssh
+            # 리눅스 - ~/.ssh
         * 확장자 없는게 개인키, .pub파일이 공개키
         * type %USERPROFILE%\.ssh\id_ed25519.pub | ssh blizkrig553@localhost "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
+        * 공개키 복사
+            # ssh-copy-id (복사될 유저이름)@(복사될 ip)
 11. sourcetree
     - git gui
     - https://www.sourcetreeapp.com/ 에서 다운
@@ -106,7 +164,7 @@
             # 인증 oauth
             # oauth 토큰 새로고침 클릭해 깃허브와 연돌
             # 연동 성공 시 인증 성공이라고 뜸
-        * 확인 누르면 깃헙과 연동이 됨
+        * 확인 누르면 깃허브과 연동이 됨
     - 레포지토리 생성
         * 생성 -> 깃허브에 업로드 할 폴더 경로 입력 -> 이미 있는 폴더라고 뜨면 yes 누름 -> 생성 완료
     - 브랜치 옆에 동그라미 표시가 있는 곳이 현재 헤드
@@ -130,6 +188,82 @@
 12. 메이븐
     - 자바 프로젝트 관리도구
     - https://mvnrepository.com/ 에서 의존성(dependancy) 다운
+13. vagrant
+    - 가상머신 자동화도구
+    - https://developer.hashicorp.com/vagrant/install 에서 설치
+    - https://portal.cloud.hashicorp.com/vagrant/discover 에서 harsicorp-edu 검색
+        * hashicorp-education/ubuntu-24-04
+    - Vagrantfile 설정 후 vagrant up 명령어 입력하면 세팅 시작
+    - 세팅 완료 후 작업 보고싶으면 세팅된 가상머신 더블클릭
+        * 닫을 때에는 계속 배경에서 실행 클릭
+    - 명령어
+        * vagrant up: 가상머신 시작
+            # 가상머신이 없으면 다운로드 받음
+            # up시 private key에서 멈춘 경우 ^C 누르고 재시작
+        * vagrant ssh (접속할 컴퓨터 이름): vagrnat 접속
+            # ssh vagrant@(접속할 컴퓨터 IP) -p (포트번호)로도 접속 가능
+            # ssh로 접속하면 비밀번호는 vagrant
+        * vagrant halt: vagrant 종료
+        * vagrant status: 상태보기
+            # default에서 실행 중인것 확인
+        * vagrant destroy -f: 버츄얼 박스에서 삭제
+        * vagrant snapshot save (스냅샷 이름): 스냅샷 저장
+        * vagrant snapshot restore (스냅샷 이름): 스냅샷 복구
+            # --no-start
+                & 복구 후 강제시작 방지
+    - 버츄얼박스에서 실행중인 vagrant를 종료시키 않도록 조심
+        * 만약 버츄얼 박스에서 종료했으면 vagrant halt 명령어로 종료
+    - 만약 버츄얼 박스 여러개를 동시에 세팅중에 멈춘경우
+        * vagrant halt 이후 vagrant up
+    - 스냅샷 저장
+14. ansible
+    - 여러 컴퓨터에 접속해 동시에 작업을 실행시켜주는 도구
+
+
+리눅스 내 명령어
+    - ip a(ddr)
+        * 자기 자신 주소 보기
+    - sudo usermod [플래그] (프로그램 이름) (유저이름)
+        * 유저가 sudo 없이 프로그램을 쓰게 해주는 명령어
+        * -aG를 주로 씀
+            # -a: 기존거에 더해서 부여
+            # -G: 그룹 지정
+    - sudo apt-get update
+        * 패캐지 업데이트 내용 불러옴
+    - sudo apt-get upgrade -y
+        * 패캐지 업데이트
+        * -y가 없으면 확인이 필요한 항목마다 yes를 눌러줘야 함
+    - df
+        * 모든 디스크 사용량
+        * -h
+            # 읽기 쉬운 단위로 출력
+    - du
+        * 특정 디스크 사용량
+        * 인자는 df와 동일
+    - free
+        * 메모리 사용량
+        * -h
+            # 읽기 쉬운 단위로 출력
+    - swapoff
+        * 스왑 메모리 사용 안함
+        * -a
+            # 모든 스왑 메모리 사용 안함
+        * -s
+            # 스왑 메모리 상태 출력
+    - swapon
+        * 스왑 메모리 사용
+        * 인자는 swapoff와 동일
+    - sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv && sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+        * 디스크 용량 리사이즈 명령어
+    - which (명령어)
+        * 명령어의 위치를 알려줌
+        * 주로 설치가 정상적으로 되었는지 확인하기 위해 사용
+        * -a
+            # 모든 위치에서 찾음
+    - whereis (명령어)
+        * 명령어의 실행/소스/man 페이지 파일을 찾아줌
+    - locate (파일명)
+        * 파일명과 일치하는 패턴/파일명이 위치하는 곳을 알려줌
 
 
 VSCode에서 메이븐 빌드 방법
@@ -143,11 +277,6 @@ VSCode에서 메이븐 빌드 방법
     - 익스플로러 창에 maven 항목 띄우기
     - 프로젝트 우클릭 -> run maven commands -> install
     - jar 파일 위치: root/target/(프로젝트명).jar
-
-
-리눅스 기본패캐지 설치
-    - sudo apt-get update
-    - sudo apt-get upgrade -y
 
 
 VirtualBox 내 포트포워딩 설정
@@ -179,12 +308,6 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 - https://docs.docker.com/engine/install/ubuntu/ 참조
 
 
-리눅스에서 특정 프로그램 실행권한 부여
-    - sudo usermod [플래그] (프로그램 이름) (유저이름)
-    - -aG를 주로 씀
-        * -a: 기존거에 더해서 부여
-        * -G: 그룹 지정
-
 docker-compose.yml 구성내용
 version: '3'
 services:
@@ -199,7 +322,7 @@ services:
 - docker compose pull && docker compose up -d
 
 
-깃헙 토큰 발급
+깃허브 토큰 발급
     - 내 프로필 클릭 -> 세팅 -> developer settings -> personal access tokens -> Tokens(classic) -> generate new token -> New personal access token (classic)
     - 아래 정보 입력
         * Note: 토큰 제목, 토큰 생성 목적 입력
@@ -252,8 +375,16 @@ services:
 
 깃허브 action의 secrets 설정
     - action파일에 직접적으로 아이디/비밀번호를 입력할 수 없으니 secrets을 설정해 아이디/비밀번호를 감춤
-    - 레포지토리 -> settings -> secrets and variables -> actions -> new repository secret -> 아래 정보 입력
-        * name에 시크릿 이름
-        * secret에 시크릿 내용(password의 경우 토큰)
-    - add secret 눌러 종료
+    - 깃허브 홈페이지에서 설정
+        * 레포지토리 -> settings -> secrets and variables -> actions -> new repository secret -> 아래 정보 입력
+            # name에 시크릿 이름
+            # secret에 시크릿 내용(password의 경우 토큰)
+        * add secret 눌러 종료
+    - vscode에서 설정
+        * github actions 확장 -> settings -> secrets -> repository secrets 옆에 + 누름 -> 시크릿 이름 입력 -> 시크릿 내용 입력
     - 레포지토리마다 설정해줘야 함
+
+
+버츄얼 박스 failed to load unit 'cpum' 오류
+    - https://story-2.tistory.com/entry/virtualbox-error
+    - 안켜지는 이미지 오른쪽 클릭 -> 저장된 상태 삭제 클릭 -> 재시작
