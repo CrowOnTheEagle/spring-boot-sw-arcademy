@@ -76,7 +76,7 @@
             # ssh 터널링 이용
             # 대표적인 사이트: serveo, ngrok
     - 훅 등록
-        * 깃허브 레포지토리 -> settings -> webhooks -> add webhooks -> 아래정보 입력
+        * 깃허브 레포지토리 -> settings -> webhooks -> add webhooks -> 아래정보 입력W
             # payload url에 (터널링 주소)/github-webhooks (여기서는 ngrok forwarding 옆의 주소)
             # content type을 application/json으로 설정
         * add webhooks로 추가 완료
