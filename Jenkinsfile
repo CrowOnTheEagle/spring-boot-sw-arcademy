@@ -35,7 +35,7 @@ pipeline {
         // build docker
         stage('3. 도커 빌드') {
             steps {
-                sh 'docker build -t ex02-app:latest'
+                sh 'docker build -t ex02-app:latest .'
             }
         }
     }
