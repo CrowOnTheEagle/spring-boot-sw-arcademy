@@ -90,7 +90,7 @@
         * action파일에 직접적으로 아이디/비밀번호를 입력할 수 없으니 secrets을 설정해 아이디/비밀번호를 감춤
         * 깃허브 홈페이지에서 설정
             # 레포지토리 -> settings -> secrets and variables -> actions -> new repository secret -> 아래 정보 입력
-                & name에 시크릿 이름
+                & name에 시크릿 이름 
                 & secret에 시크릿 내용(password의 경우 토큰)
             # add secret 눌러 종료
         * vscode에서 설정
