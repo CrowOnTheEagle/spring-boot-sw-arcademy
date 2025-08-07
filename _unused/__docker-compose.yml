@@ -1,0 +1,10 @@
+version: '3'
+services:
+  order-service:
+    ## image name to load
+    image: crowontheeagle/spring01-service:latest
+    ## ports to open
+    ports:
+      - "8081:8081"
+    ## determin run docker when linux started
+    restart: always

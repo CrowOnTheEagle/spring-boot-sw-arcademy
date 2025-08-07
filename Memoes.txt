@@ -22,6 +22,9 @@
     - 시스템과 상관없이 배포가 가능하게 하는 프로그램
     - jar -> 이미지화 -> 도커 업로드 -> 다른 디바이스에서 이미지 다운로드
     - https://hub.docker.com/explore 에서 이미지를 찾음
+    - 설치
+        * 리눅스
+            # https://docs.docker.com/engine/install/ubuntu/ 에서 Install using the apt repository 아래 명령어 입력
     - 이미지
         * 가상 CD로, CD 안의 프로그램을 설치해야 함
     - 컨테이너
@@ -41,6 +44,15 @@
             # -p: 포트번호 설정
         * docker ps: 실행중인 컨테이너 목록 확인
     - 도커에 이미지를 올리는 것이 CI
+    - 도커 토큰 발급
+        * 도커 홈페이지 -> 프로필 클릭 -> account settings -> personal access tokens -> generate new token
+        * 아래 정보 입력
+            # access token description: 토큰 생성 목적
+            # expiration date: 토큰 종료 날짜
+            # access permission: 토큰의 허용 범위(보통 read write)
+        * 설정 후 generate -> 생성된 토큰 복사 후 저장
+    - docker-compose.yml 파일 실행
+        * docker compose pull && docker compose up -d
 2. git
     - 형상관리 툴
     - 책 4장까지만 참조
@@ -63,6 +75,37 @@
         * 해결법
             # ssh 터널링 이용
             # 대표적인 사이트: serveo, ngrok
+    - 훅 등록
+        * 깃허브 레포지토리 -> settings -> webhooks -> add webhooks -> 아래정보 입력
+            # payload url에 (터널링 주소)/github-webhooks (여기서는 ngrok forwarding 옆의 주소)
+            # content type을 application/json으로 설정
+        * add webhooks로 추가 완료
+    - 다른 유저 추가
+        * 레포지토리 -> settings -> collaborators -> add people -> 유저 찾아서 클릭 -> add to repository
+    - 깃에서 jar 파일 빌드
+        * 사전 설정
+            # 레포지토리 -> settings -> actions -> general -> workflow permissions탭 -> read and write permissions 선택 -> allow gitbut actiosn... 체크박스 체크(액션 작동하면서 pull 리퀘스트 가능하게 할건지) -> save
+        * 레포지토리가 저장된 폴더에 .gihub/workflows 폴더 생성 후 ci.yml 파일 생성
+    - secrets 설정
+        * action파일에 직접적으로 아이디/비밀번호를 입력할 수 없으니 secrets을 설정해 아이디/비밀번호를 감춤
+        * 깃허브 홈페이지에서 설정
+            # 레포지토리 -> settings -> secrets and variables -> actions -> new repository secret -> 아래 정보 입력
+                & name에 시크릿 이름
+                & secret에 시크릿 내용(password의 경우 토큰)
+            # add secret 눌러 종료
+        * vscode에서 설정
+            # github actions 확장 -> settings -> secrets -> repository secrets 옆에 + 누름 -> 시크릿 이름 입력 -> 시크릿 내용 입력
+        * 레포지토리마다 설정해줘야 함
+    - 토큰 발급
+        * 내 프로필 클릭 -> 세팅 -> developer settings -> personal access tokens -> Tokens(classic) -> generate new token -> New personal access token (classic)
+        * 아래 정보 입력
+            # Note: 토큰 제목, 토큰 생성 목적 입력
+            # expiration: 토큰 종료 날짜
+            # Select scopes: 토큰의 허용 범위
+                & repo: 레포지토리 관련 허용 범위
+                & admin:repo_hook
+                & delete_repo: 레포지토리를 터미널에서 원격 삭제 가능 여부
+        * 필요한 설정 후 generate token -> 생성된 토큰 복사 후 잘 저장
 3. 젠킨스(jenkins)
     - CI/CD 툴
     - 리눅스에서 설치
@@ -112,8 +155,16 @@
         * 아이템에 들어와서 지금 빌드 클릭
         * stage에서 현재 실행중인 단계 확인 가능
     - 도커와 같이 사용 시 도커를 먼저 설치하는게 좋음
-    - 젠킨스 내 자바 빌드 도구 설정
-        * 설정 -> tools -> maven installations -> add maven -> 메이븐 이름 지정 -> 버전 선택 -> save
+    - 젠킨스에서 자바 빌드
+        * 도구 설정
+            # 설정 -> tools -> maven installations -> add maven -> 메이븐 이름 지정 -> 버전 선택 -> save
+        * 빌드된 파일 위치
+            # /var/lib/jenkins/workspace/item01/target
+    - 트리거 설정
+        * 터널링, 웹 훅 설정 필요
+        * 깃 -> 터널링 툴 -> 젠킨스 순으로 메세지 전송
+        * 아이템 -> configuration(구성) -> tiggers -> github hook tirgger... 체크박스 클릭 -> save
+            # github hook tirgger... 하면 깃허브 푸시되면 아이템 빌드
 4. K8S(Kubernetes, 쿠버네티스)
     - 여러 컨테이너들을 쉽게 관리하게 도와주는 툴
     - 복잡하고 큰 환경에 쓰임
@@ -224,9 +275,18 @@
         * vagrant halt 이후 vagrant up
 14. ansible
     - 여러 컴퓨터에 접속해 동시에 작업을 실행시켜주는 도구
+15. ngrok
+    - 무료 터널링 툴
+    - 설치
+        * ngrok -> setup & installation -> 리눅스 -> 설치코드 복사 -> 설치
+    - ngrok config add-authtoken (토큰)으로 토큰 저장
+    - ngrok http http://localhost:8080으로 실행
+        * Forwarding 옆의 주소가 자신의 고유 주소
+        * 주소는 실행때마다 달라짐
 
 
-리눅스 내 명령어
+그 외
+1. 리눅스 내 명령어
     - ip a(ddr)
         * 자기 자신 주소 보기
     - sudo usermod [플래그] (프로그램 이름) (유저이름)
@@ -283,90 +343,27 @@
                 & 해당 서비스 시작
             # stop
                 & 해당 서비스 중단
-
-
-VSCode에서 메이븐 빌드 방법
+2. VSCode에서 메이븐 빌드 방법
     - https://maven.apache.org/download.cgi 링크에서 바이너리 zip 파일 다운
     - maven 확장 설정을 아래와 같이 적용
         * user settings의 경로를 (다운받은 메이븐 폴더)/conf/settings.xml 위치로 설정
         * excuteable path를 mvn.cmd 혹은 mvnw(.cmd) 파일 위치로 설정
         * 혹은 settings.json 파일에 아래 내용 추가
-            # "java.configuration.maven.userSettings": "C:\\spring-boot-sw-arcademy\\apache-maven\\conf\\settings.xml",
+            # "java.configuration.mavsen.userSettings": "C:\\pring-boot-sw-arcademy\\apache-maven\\conf\\settings.xml",
             # "maven.executable.path": "C:\\spring-boot-sw-arcademy\\mvnw",
     - 익스플로러 창에 maven 항목 띄우기
     - 프로젝트 우클릭 -> run maven commands -> install
     - jar 파일 위치: root/target/(프로젝트명).jar
-
-
-VirtualBox 내 포트포워딩 설정
+3. VirtualBox 내 포트포워딩 설정
     - 설정 -> export -> 네트워크 -> 포트포워딩 들어가서 아래 정보 입력
     - ./Memos/포트포워딩.png 파일 참고
-
-
-가상머신 복제
+4. 가상머신 복제
     - 복제할 가상머신 오른쪽 클릭 -> 복제 -> 완전한 복제 -> 완료
     - 리눅스는 잘못되는경우가 많아 복제를 해둬야함
-
-기존 포트 사용중인 오류가 뜰 때
+5. 기존 포트 사용중인 오류가 뜰 때
     - cmd에서 netstat -ano | find "LISTEN" | find "[::]:8081"
     - kill pid 혹은 taskkill /f /pid pid 입력
-
-
-우분투 내 도커 설치
-sudo apt-get update;
-sudo apt-get install ca-certificates curl gnupg;
-sudo install -m 0755 -d /etc/apt/keyrings;
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg;
-sudo chmod a+r /etc/apt/keyrings/docker.gpg;
-echo \
-  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update;
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y;
-- https://docs.docker.com/engine/install/ubuntu/ 참조
-
-
-docker-compose.yml 구성내용
-version: '3'
-services:
-  order-service:
-    ## image name to load
-    image: crowontheeagle/spring01-service:latest
-    ## ports to open
-    ports:
-      - "8081:8081"
-    ## determin run docker when linux started
-    restart: always
-- docker compose pull && docker compose up -d
-
-
-깃허브 토큰 발급
-    - 내 프로필 클릭 -> 세팅 -> developer settings -> personal access tokens -> Tokens(classic) -> generate new token -> New personal access token (classic)
-    - 아래 정보 입력
-        * Note: 토큰 제목, 토큰 생성 목적 입력
-        * expiration: 토큰 종료 날짜
-        * Select scopes: 토큰의 허용 범위
-            # repo: 레포지토리 관련 허용 범위
-            # admin:repo_hook
-            # delete_repo: 레포지토리를 터미널에서 원격 삭제 가능 여부
-    - 필요한 설정 후 generate token -> 생성된 토큰 복사 후 잘 저장
-
-
-도커 토큰 발급
-    - 도커 홈페이지 -> 프로필 클릭 -> account settings -> personal access tokens -> generate new token
-    - 아래 정보 입력
-        * access token description: 토큰 생성 목적
-        * expiration date: 토큰 종료 날짜
-        * access permission: 토큰의 허용 범위(보통 read write)
-    - 설정 후 generate -> 생성된 토큰 복사 후 저장
-
-
-깃허브 다른 유저 추가
-    - 레포지토리 -> settings -> collaborators -> add people -> 유저 찾아서 클릭 -> add to repository
-
-
-이클립스 내 깃허브 연동
+6. 이클립스 내 깃허브 연동
     - 깃허브에 적용할 레포지토리가 깃허브에 있어야 함
     - 프로젝트 우클릭 -> team -> share project -> use or create..... 체크박스 체크 -> 프로젝트 옆 체크박스 체크 -> create repository 체크박스 체크 -> create repository 클릭 -> 완료
     - window -> show view -> other... -> git -> git staging으로 깃 ui 표시
@@ -382,28 +379,6 @@ services:
             # password에 깃허브 토큰 입력
             # store in secure store 체크박스 체크
         * preview -> preview -> push
-
-깃에서 jar 파일 빌드
-    - 사전 설정
-        * 레포지토리 -> settings -> actions -> general -> workflow permissions탭 -> read and write permissions 선택 -> allow gitbut actiosn... 체크박스 체크(액션 작동하면서 pull 리퀘스트 가능하게 할건지) -> save
-    - 레포지토리가 저장된 폴더에 .gihub/workflows 폴더 생성 후 ci.yml 파일 생성
-    - 이클립스의 경우
-        * 프로젝트 우클릭 -> properties -> java build path -> source 탭 선택 -> add folder -> 
-    - ci.yml 파일에 아래 내용 추가
-
-
-깃허브 action의 secrets 설정
-    - action파일에 직접적으로 아이디/비밀번호를 입력할 수 없으니 secrets을 설정해 아이디/비밀번호를 감춤
-    - 깃허브 홈페이지에서 설정
-        * 레포지토리 -> settings -> secrets and variables -> actions -> new repository secret -> 아래 정보 입력
-            # name에 시크릿 이름
-            # secret에 시크릿 내용(password의 경우 토큰)
-        * add secret 눌러 종료
-    - vscode에서 설정
-        * github actions 확장 -> settings -> secrets -> repository secrets 옆에 + 누름 -> 시크릿 이름 입력 -> 시크릿 내용 입력
-    - 레포지토리마다 설정해줘야 함
-
-
-버츄얼 박스 failed to load unit 'cpum' 오류
+7. 버츄얼 박스 failed to load unit 'cpum' 오류
     - https://story-2.tistory.com/entry/virtualbox-error
     - 안켜지는 이미지 오른쪽 클릭 -> 저장된 상태 삭제 클릭 -> 재시작
