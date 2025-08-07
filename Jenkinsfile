@@ -18,12 +18,12 @@ pipeline {
 
         // Build java project with maven
         // 메이븐을 이용해 자바 프로젝트 빌드
-        //stage('1. 프로젝트 빌드') {
-        //    steps {
-        //        echo 'Maven 빌드 시작...'
-        //        sh 'mvn clean package'
-        //    }
-        //}
+        stage('1. 프로젝트 빌드') {
+            steps {
+                echo 'Maven 빌드 시작...'
+                sh 'mvn clean package'
+            }
+        }
 
         // check docker version
         stage('2. Docker 버전 확인') {
