@@ -1,0 +1,35 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "hashicorp-education/ubuntu-24-04"
+
+  machines = {
+    "v01" => "192.168.56.10",
+    "v02" => "192.168.56.11",
+    "v03" => "192.168.56.12"
+  }
+
+  machines.each do |name, ip|
+    config.vm.define name do |node|
+      ## machines의 v0X가 들어감
+      node.vm.hostname = name
+      ## machines의 IP가 들어감
+      node.vm.network "private_network", ip: ip
+
+      node.vm.provider "virtualbox" do |vb|
+	## 버츄얼 박스 이름
+        vb.name = "MyVM-#{name}"
+	## 버츄얼 박스 메모리
+        vb.memory = 3072
+	## 버츄얼 박스 CPU 코어 개수
+        vb.cpus = 3
+      end
+
+      ## 무시가능
+      ## 리눅스의 가장 기본적인 기능만 집어넣음
+      node.vm.provision "shell", inline: <<-SHELL
+        export DEBIAN_FRONTEND=noninteractive
+        sudo apt-get update -y
+        sudo apt-get install -y sshpass
+      SHELL
+    end
+  end
+end

@@ -68,26 +68,29 @@
     - 리눅스에서 설치
         * sudo apt update && sudo apt install -y openjdk-17-jdk
             # 자바 설치(설치되어 있으면 스킵)
-        * curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \ /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+        * curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \/usr/share/keyrings/jenkins-keyring.asc > /dev/null
             # 젠킨스 공식 홈페이지에서 인증키 받아옴
             # 성공 시 출력 없음
-        * echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \ https://pkg.jenkins.io/debian-stable binary/ | sudo tee \ /etc/apt/sources.list.d/jenkins.list > /dev/null
+            # 이 과정이 없으면 젠킨스 설치 불가능
+        * echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \ https://pkg.jenkins.io/debian-stable binary/ | sudo tee \/etc/apt/sources.list.d/jenkins.list > /dev/null
             # 젠킨스 패캐지를 받아올 곳을 설정
             # 성공 시 출력 없음
-        * sudo apt update && sudp apt install -y jenkins
+        * sudo apt update && sudo apt install jenkins -y
             # 젠킨스 설치
-        * sudo systemctl enable jenkins && sudo systemctl start jenkins
+        * sudo systemctl enable jenkins
             # 시스템 시작 시 젠킨스 자동실행
-            # sudo systemctl status jenkins
-                & 젠킨스 상태 확인
-                & active: active면 돌아가는 중
+        * sudo systemctl start jenkins
+            # 젠킨스 실행
+        * sudo systemctl status jenkins
+            # 젠킨스 상태 확인
+            # active: active면 돌아가는 중
     - 윈도우에서 설치
         * https://www.jenkins.io/download/ 에서 설치 파일 다운로드
     - 젠킨스 언락
         * 브라우저에서 (언락하려는 곳의 주소):8080 에 접속
         * 빨간줄 내 주소 복사하고 sudo cat /var/lib/jenkins/secrets/initialAdminPassword 를 입력해 비밀번호 찾아냄
         * 비밀번호를 복사해 입력
-        * install all plugins 선택해 모든 플러그인 설치
+        * install suggested plugins 선택해 모든 플러그인 설치
         * 어드민 계정 입력
             # 계정명, 비밀번호, 이름, 이메일
         * save and continue
@@ -100,7 +103,7 @@
             # 프리스타일: 튜토리얼에서 씀
             # 파이프라인: 자주 쓰임
     - 작업 설정
-        * 아이템 -> configuration -> pipeline -> definition을 pipeline script from scm으로 변경 -> SCM을 git으로 변경 -> git repository 주소를 복사해 repository URL에 입력
+        * 아이템 -> configuration(구성) -> pipeline -> definition을 pipeline script from scm으로 변경 -> SCM을 git으로 변경 -> git repository 주소를 복사해 repository URL에 입력
             # 유효한 주소면 아무것도 안뜸
             # 유효하지 않으면 빨간 글씨로 오류가 뜸
         * credentials은 none으로 변경 -> branch specifier을 main으로 변경 -> script path에 젠킨스 실행용 파일 지정(보통 놔둠) -> save
@@ -108,6 +111,7 @@
     - 작업 수동 시작
         * 아이템에 들어와서 지금 빌드 클릭
         * stage에서 현재 실행중인 단계 확인 가능
+    - 도커와 같이 사용 시 도커를 먼저 설치하는게 좋음
 4. K8S(Kubernetes, 쿠버네티스)
     - 여러 컨테이너들을 쉽게 관리하게 도와주는 툴
     - 복잡하고 큰 환경에 쓰임
@@ -211,11 +215,11 @@
         * vagrant snapshot restore (스냅샷 이름): 스냅샷 복구
             # --no-start
                 & 복구 후 강제시작 방지
+        * vagrant snapshot delete (스냅샷 이름): 스냅샷 삭제
     - 버츄얼박스에서 실행중인 vagrant를 종료시키 않도록 조심
         * 만약 버츄얼 박스에서 종료했으면 vagrant halt 명령어로 종료
     - 만약 버츄얼 박스 여러개를 동시에 세팅중에 멈춘경우
         * vagrant halt 이후 vagrant up
-    - 스냅샷 저장
 14. ansible
     - 여러 컴퓨터에 접속해 동시에 작업을 실행시켜주는 도구
 
@@ -264,6 +268,19 @@
         * 명령어의 실행/소스/man 페이지 파일을 찾아줌
     - locate (파일명)
         * 파일명과 일치하는 패턴/파일명이 위치하는 곳을 알려줌
+    - systemctl (명령) (서비스)
+        * 서비스 제어와 관련한 명령어
+        * 명령목록
+            # status
+                & 서비스의 현재 상태를 봄
+            # enable
+                & 시스템 시작 시 해당 서비스 자동실행
+            # disable
+                & 시스템 시작 시 해당 서비스 자동실행 중단
+            # start
+                & 해당 서비스 시작
+            # stop
+                & 해당 서비스 중단
 
 
 VSCode에서 메이븐 빌드 방법
