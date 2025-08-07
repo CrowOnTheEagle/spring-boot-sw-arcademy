@@ -17,19 +17,25 @@ pipeline {
         }
 
         // Build java project with maven
-        // 메이븐을 이용해 자바 빌드
-        stage('1. 메이븐 빌드') {
-            steps {
-                echo 'Maven 빌드 시작...'
-                sh 'mvn clean package'
-            }
-        }
+        // 메이븐을 이용해 자바 프로젝트 빌드
+        //stage('1. 프로젝트 빌드') {
+        //    steps {
+        //        echo 'Maven 빌드 시작...'
+        //        sh 'mvn clean package'
+        //    }
+        //}
 
         // check docker version
-        // 도커 버전 확인
         stage('2. Docker 버전 확인') {
+           steps {
+               sh 'docker version'
+           }
+        }
+
+        // build docker
+        stage('3. 도커 빌드') {
             steps {
-                sh 'docker version'
+                sh 'docker build -t ex02-app:latest'
             }
         }
     }
