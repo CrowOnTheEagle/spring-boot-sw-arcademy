@@ -165,6 +165,16 @@
         * 깃 -> 터널링 툴 -> 젠킨스 순으로 메세지 전송
         * 아이템 -> configuration(구성) -> tiggers -> github hook tirgger... 체크박스 클릭 -> save
             # github hook tirgger... 하면 깃허브 푸시되면 아이템 빌드
+    - 도커 로그인
+        * jenkins -> settings -> credentials -> (global) 옆 버튼 -> add credentials -> 아래 정보 입력
+            # kind는 username with password
+            # username에 도커 계정 입력
+            # treat username as secret 선택
+                & 선택하면 계정명이 *로 처리됨
+            # password에 도커 계정 비밀번호 입력
+            # ID에 보안카드 이름 입력
+            # description에 credentials 설명 입력
+        * create 눌러 생성
 4. K8S(Kubernetes, 쿠버네티스)
     - 여러 컨테이너들을 쉽게 관리하게 도와주는 툴
     - 복잡하고 큰 환경에 쓰임

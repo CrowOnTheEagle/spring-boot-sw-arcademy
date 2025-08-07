@@ -38,5 +38,22 @@ pipeline {
                 sh 'docker build -t ex02-app:latest .'
             }
         }
+
+        // Push to docker
+        stage('4. Docker에 푸시') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-card',
+                    usernameVariable: 'DOCKERHUB_USERNAME',
+                    passwordVariable: 'DOCKERHUB_PASSWORD'
+                )]) {
+                    sh '''
+                    echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+                    docker tag ex02-app:latest $DOCKERHUB_USERNAME/ex02-app:latest
+                    docker push $DOCKERHUB_USERNAME/ex02-app:latest
+                    '''
+                }
+            }
+        }
     }
 }
