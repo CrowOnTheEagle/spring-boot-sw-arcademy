@@ -7,6 +7,6 @@ metadata:
 spec:
   containers:
     - name: ex02-app
-      image: crowontheealge/ex02-app:latest
+      image: crowontheeagle/ex02-app:latest
       ports:
         - containerPort: 8081
