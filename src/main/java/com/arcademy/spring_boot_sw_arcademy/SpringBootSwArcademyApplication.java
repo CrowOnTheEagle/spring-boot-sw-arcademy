@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 public class SpringBootSwArcademyApplication {
 	@GetMapping("/")
 	public String MainPage() {
-		return "Spring02:20250805-145002\n";
+		return "Spring02:20250811-142716\n";
 	}
 	public static void main(String[] args) {
 		System.out.println("SPRING STARTED!!!");
