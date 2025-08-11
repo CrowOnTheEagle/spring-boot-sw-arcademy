@@ -201,6 +201,16 @@
     - 명령어
         * kubectl get nodes
             # 쿠버네티스 노드들을 불러옴
+        * kubectl get pods
+            # 현재 실행중인 포드 불러옴
+        * kubectl delete pod (포드명)
+            # 실행중인 포드 삭제
+        * kubectl run ex02-app --image=belokana/ex02-app:latest --port=8081
+            # 포드 실행
+        * kubectl port-forward --address 0.0.0.0 pod/ex02-app 8081:8081
+            # 포트포워딩
+        * kubectl apply -f (파일명)
+            # 해당 yaml 파일 안에 있는 내용을 실행함
 5. argoCD
     - git 배포 기반의 gitops 도구
 6. Spring/Spring Boot
@@ -440,3 +450,6 @@
     - webhook/trigger 설정(자동화)
     - 도커 이미지 빌드
     - 도커 이미지 푸시
+    - k3s에 배포
+        * 수동(CLI 이용)
+        * 자동
