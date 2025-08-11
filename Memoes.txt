@@ -215,7 +215,31 @@
 5. argoCD
     - git 배포 기반의 gitops 도구
     - 쿠버네티스 안에서 CD 작업 수행
-    - 
+    - DNS 설정
+        * /etc/systemd/resolved.conf 파일 안의 DNS= 부분을 DNS=8.8.8.8 1.1.1.1 로 변경
+        * sudo systemctl restart systemd-resolved 로 적용
+    - 설치
+        * kubectl create namespace argocd
+        * kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    - 대시보드
+        * kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}' 로 노드 포트 설정
+        * 비밀번호 얻는 법
+            # kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+    - 앱 생성
+        * new app -> 아래 정보 입력
+            # 애플리케이션 이름: 배포할 앱 이름
+            # 프로젝트 이름: default
+            # sync policy: manual
+            # source/repository URL: git 주소
+            # source/revision: head 또는 main
+            # source/path: helm 차트가 위치한 주소
+            # cluster URL: 쿠버네티스 URL, 클릭 시 자동으로 하나 나옴
+        * create
+        * 생성 후 settings -> connect repo using http/https -> 아래 정보 입력
+            # type에 git
+            # repository URL에 깃허브 주소 입력
+            # username에 본인 깃허브 닉네임 입력
+            # password에 깃허브 토큰 입력
 6. Spring/Spring Boot
     - Spring Boot와는 다름
     - Tomcat이 내장되어 있음
