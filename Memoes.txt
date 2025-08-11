@@ -178,6 +178,29 @@
 4. K8S(Kubernetes, 쿠버네티스)
     - 여러 컨테이너들을 쉽게 관리하게 도와주는 툴
     - 복잡하고 큰 환경에 쓰임
+    - k3s
+        * 쿠버네티스 경량화 버전
+    - k9s
+        * 쿠버네티스 관리 ui
+        * 설치 
+            VERSION=$(curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep tag_name | cut -d '"' -f 4) && \
+            curl -LO https://github.com/derailed/k9s/releases/download/${VERSION}/k9s_Linux_amd64.tar.gz && \
+            tar -xzf k9s_Linux_amd64.tar.gz && \
+            sudo mv k9s /usr/local/bin/ && sudo chmod +x /usr/local/bin/k9s && \
+            rm k9s_Linux_amd64.tar.gz && \
+            mkdir -p ~/.kube && \
+            sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config && \
+            sudo chown $(id -u):$(id -g) ~/.kube/config && sudo chmod 600 ~/.kube/config && \
+            echo "k9s 설치 및 kubeconfig 설정 완료! 이제 'k9s' 또는 'kubectl get nodes'를 사용하세요."
+    - kubectl 설치
+        * kubectl: 쿠버네티스 클러스터 명령줄 도구
+        * curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+        * 설치 후 쿠버네티스에 접근할 권할 설정
+            # ~/.kube 폴더 아래에 쿠버네티스가 깔려있는 컴퓨터에서 인증서를 받아야 함
+            # scp /etc/rancher/k3s/k3s.yaml (상대방컴퓨터 사용자명 및 주소):~/.kube/config
+    - 명령어
+        * kubectl get nodes
+            # 쿠버네티스 노드들을 불러옴
 5. argoCD
     - git 배포 기반의 gitops 도구
 6. Spring/Spring Boot
@@ -285,6 +308,17 @@
         * vagrant halt 이후 vagrant up
 14. ansible
     - 여러 컴퓨터에 접속해 동시에 작업을 실행시켜주는 도구
+    - 작업에 필요한 것
+        * 접속할 컴퓨터의 ip(inventory)
+            # hosts.ini 파일에 저장
+        * 작업할 내용(playbook)
+            # setup.yml 파일에 저장
+    - 설치
+        * 보통 젠킨스 서버에 설치
+        * sudo apt update && sudo apt install ansible -y && sudo apt install sshpass  -y
+            # sshpass: ssh 키 값 복제에 쓰이는 라이브러리
+    - 실행
+        * ansible-playbook -i hosts.ini setup.yml --ask-pass --ask-become-pass
 15. ngrok
     - 무료 터널링 툴
     - 설치
@@ -353,6 +387,8 @@
                 & 해당 서비스 시작
             # stop
                 & 해당 서비스 중단
+    - hostnamectl set-hostname (호스트명)
+        * 호스트 이름 변경
 2. VSCode에서 메이븐 빌드 방법
     - https://maven.apache.org/download.cgi 링크에서 바이너리 zip 파일 다운
     - maven 확장 설정을 아래와 같이 적용
@@ -392,3 +428,10 @@
 7. 버츄얼 박스 failed to load unit 'cpum' 오류
     - https://story-2.tistory.com/entry/virtualbox-error
     - 안켜지는 이미지 오른쪽 클릭 -> 저장된 상태 삭제 클릭 -> 재시작
+8. 전체적인 스프링 부트 서비스
+    - 스프링 부트 서비스 준비
+    - 젠킨스 준비
+    - 쿠버네티스 설치
+    - 젠킨스 서버에 kubectl 설치
+    - spring boot와 깃허브 연동
+    - 젠킨스에 item 생성 및 깃허브 연동

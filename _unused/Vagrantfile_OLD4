@@ -1,0 +1,30 @@
+# 안전한 MAC 주소 생성 예시 (Unicast & Locally Administered)
+def generate_safe_mac
+  mac = [0x08] + Array.new(5) { rand(0..255) }  # 08:xx:xx:xx:xx:xx
+  mac.map { |b| "%02X" % b }.join
+end
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "hashicorp-education/ubuntu-24-04"
+
+  machines = {
+    "vm7" => "192.168.56.107"
+  }
+
+  machines.each do |name, ip|
+    config.vm.define name do |node|
+      node.vm.hostname = name
+      node.vm.network "private_network", ip: ip
+
+      node.vm.provider "virtualbox" do |vb|
+        vb.name = name
+        vb.memory = 2048
+        vb.cpus = 1
+
+        # MAC 주소 고유화: 6자리 무작위 MAC 설정
+        safe_mac = generate_safe_mac
+        vb.customize ["modifyvm", :id, "--macaddress1", safe_mac]
+      end
+    end # config.vm.define END
+  end # machines.each END
+end # Vagrant.configure END
