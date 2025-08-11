@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ex02-app
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  source:
+    path: charts/ex02-app
+    repoURL: https://github.com/CrowOnTheEagle/spring-boot-sw-arcademy
+    targetRevision: main
+  sources: []
+  project: default

@@ -212,6 +212,8 @@
         * kubectl apply -f (파일명)
             # 해당 yaml 파일 안에 있는 내용을 실행함
             # 젠킨스를 통해서 실행 시 참조하는 파일은 레포지토리 최상위 폴더에 있는 k8s-deployment.yaml 파일
+    - ex02-app 안들어가질 때
+        * kubectl expose pod ex02-app --type=NodePort --port=8081 입력 후 나오는 포트번호 입력
 5. argoCD
     - git 배포 기반의 gitops 도구
     - 쿠버네티스 안에서 CD 작업 수행
@@ -233,13 +235,18 @@
             # source/repository URL: git 주소
             # source/revision: head 또는 main
             # source/path: helm 차트가 위치한 주소
-            # cluster URL: 쿠버네티스 URL, 클릭 시 자동으로 하나 나옴
+            # destination/cluster URL: 쿠버네티스 URL, 클릭 시 자동으로 하나 나옴
+            # destination/namespace: default
         * create
-        * 생성 후 settings -> connect repo using http/https -> 아래 정보 입력
+        * 생성 후 settings -> repository -> connect repo using http/https -> 아래 정보 입력
             # type에 git
             # repository URL에 깃허브 주소 입력
             # username에 본인 깃허브 닉네임 입력
             # password에 깃허브 토큰 입력
+    - argocd server Failed to resync revoked tokens 오류시
+        * k9s 들어가서 svclb-argocd-server... 재시작
+    - 대시보드 접근
+        * https://velog.io/@sororiri/k8s-argoCD-%EC%84%A4%EC%B9%98-%EB%B0%8F-argoCD-%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C-%EC%A0%91%EA%B7%BC%ED%95%98%EA%B8%B0
 6. Spring/Spring Boot
     - Spring Boot와는 다름
     - Tomcat이 내장되어 있음
