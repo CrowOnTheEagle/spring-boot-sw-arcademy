@@ -435,3 +435,6 @@
     - 젠킨스 서버에 kubectl 설치
     - spring boot와 깃허브 연동
     - 젠킨스에 item 생성 및 깃허브 연동
+    - 자바 빌트 테스트(jar 파일 생성)
+    - 터널링
+    - webhook/trigger 설정(자동화)
