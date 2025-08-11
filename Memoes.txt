@@ -211,6 +211,7 @@
             # 포트포워딩
         * kubectl apply -f (파일명)
             # 해당 yaml 파일 안에 있는 내용을 실행함
+            # 젠킨스를 통해서 실행 시 참조하는 파일은 레포지토리 최상위 폴더에 있는 k8s-deployment.yaml 파일
 5. argoCD
     - git 배포 기반의 gitops 도구
 6. Spring/Spring Boot
@@ -337,6 +338,19 @@
     - ngrok http http://localhost:8080으로 실행
         * Forwarding 옆의 주소가 자신의 고유 주소
         * 주소는 실행때마다 달라짐
+16. Helm
+    - 쿠버네티스에서 다량의 yaml파일을 템플릿을 이용해 빠르게 생성해주는 프로그램
+    - 레포지토리 최상위에 charts 폴더가 있어야 함
+        * charts 아래에는 차트 이름이 들어감
+            # 차트 이름 폴더 아래에는 Chart.yaml, values.yaml, /templates, /templates/deployments.yaml 파일이 있어야 함
+    - 파일별 설명
+        * Chart.yaml
+            # 헬름에 관한 정보 기술
+        * values.yaml
+            # 치환되는 값들을 저장
+        * /templates/deployment.yaml
+            # 템플릿에 대해 기술된 파일
+            # 해당 파일 내용에 따라 내용이 치환됨
 
 
 그 외
