@@ -214,6 +214,7 @@
             # 젠킨스를 통해서 실행 시 참조하는 파일은 레포지토리 최상위 폴더에 있는 k8s-deployment.yaml 파일
 5. argoCD
     - git 배포 기반의 gitops 도구
+    - 쿠버네티스 안에서 CD 작업 수행
     - 
 6. Spring/Spring Boot
     - Spring Boot와는 다름
