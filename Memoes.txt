@@ -415,6 +415,51 @@
         * conda install (라이브러리 이름) [-y]
             # 라이브러리 설치
             # -y가 있으면 설치 중 확인란 스킵
+18. pandas
+    - 파이썬 라이브러리
+    - 정형 데이터를 처리하기 위함
+    - 아래 함수들 중 +가 붙은건 멤버함수
+    - 공통 매개변수
+        * inplace: 기존 값을 변경할 것인지 여부(기본 False)
+    - pd.DataFrame
+        * 데이터프레임 생성
+        * 매개변수
+            # data: 데이터 프레임에 들어갈 데이터들
+            # columns: 열 이름
+    - concat +
+        * 데이터 합침
+    - mean +
+        * 평균
+    - var +
+        * 분포
+    - std
+        * 표준편차
+    - sort_values +
+        * 값에 따라 행 정렬
+        * 매개변수
+            # by: 정렬 기준
+            # ascending: 오름차순 여부(기본 True)
+    - reset_index +
+        * 인덱스 초기화
+        * 주로 정렬 후 사용
+        * 매개변수
+            # drop: 기존 인덱스를 버릴 것인지, False시 값으로 반환, True시 버림(기본 False)
+19. sklearn
+    - 머신러닝 프레임워크
+    - 설치
+        * pip install scikit-learn
+        * pip install scipy 도 필요
+    - sklearn.model_selection.train_test_split
+        * 데이터를 학습용과 테스트용으로 나눠줌
+        * 학습용 데이터셋, 테스트용 데이터셋, 학습용 레이블, 테스트용 레이블 순으로 반환
+        * 매개변수
+            # arrays: 데이터
+            # test_size: 테스트 데이터 크기
+            # train_size: 학습 데이터 크기
+                & 지정 안하면 1 - test_size
+                & test_size도 지정을 안하면 기본 0.75
+            # stratify: 데이터를 나눌 때 레이블을 고려할 것인지
+            # random_state: 나눌 때 난수 시드
 
 
 그 외
