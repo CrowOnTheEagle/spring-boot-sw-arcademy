@@ -23,6 +23,35 @@
         * 답을 평가하는 것
 7. 모델
     - 알고리즘이 구현된 객체
+8. 회귀
+    - regression, 예측
+    - 평균으로 돌아간다
+    - 평균을 이용해 임의의 수치 예측
+    - 선형 회귀(linear regression)
+        * 직선을 학습하는 알고리즘
+        * 데이터 분포가 비 직선형인경우 불리
+    - 다항 회귀(polynomial regression)
+        * 곡선을 학습하는 알고리즘
+9. 과적합
+    - 훈련 데이터를 이용한 점수와 테스트 데이터를 이용한 점수를 비교했을 때 차이가 크면 과적합이라고 함
+    - 아래 경우에 발생
+        * 데이터가 적을 때
+        * 잘못된 알고리즘 선택
+        * 필터링 안된 편향된 데이터
+    - 과대적합(overfitting)
+        * 훈련 점수가 테스트 점수에 비해 매우 높을 때
+    - 과소적합(underfitting)
+        * 훈련 점수가 테스트 점수에 비해 매우 낮을 때
+        * 훈련 점수와 테스트 점수 둘 다 낮을 때
+    - 예시
+        * 훈련 98, 테스트 93: 과대
+        * 훈련 96, 테스트 99: 과소
+        * 훈련 80, 테스트 78: 과소
+10. 특성 공학
+    - 기존 특성을 이용해 새 특성을 뽑아내는 작업
+    - 변수 간 연관성을 유용하게 변환하고 조작하여 모델의 성능을 최적화함
+11. 규제
+    - 과도한 학습을 막는 것
 
 
 도구
@@ -419,47 +448,11 @@
     - 파이썬 라이브러리
     - 정형 데이터를 처리하기 위함
     - 아래 함수들 중 +가 붙은건 멤버함수
-    - 공통 매개변수
-        * inplace: 기존 값을 변경할 것인지 여부(기본 False)
-    - pd.DataFrame
-        * 데이터프레임 생성
-        * 매개변수
-            # data: 데이터 프레임에 들어갈 데이터들
-            # columns: 열 이름
-    - concat +
-        * 데이터 합침
-    - mean +
-        * 평균
-    - var +
-        * 분포
-    - std
-        * 표준편차
-    - sort_values +
-        * 값에 따라 행 정렬
-        * 매개변수
-            # by: 정렬 기준
-            # ascending: 오름차순 여부(기본 True)
-    - reset_index +
-        * 인덱스 초기화
-        * 주로 정렬 후 사용
-        * 매개변수
-            # drop: 기존 인덱스를 버릴 것인지, False시 값으로 반환, True시 버림(기본 False)
 19. sklearn
     - 머신러닝 프레임워크
     - 설치
         * pip install scikit-learn
         * pip install scipy 도 필요
-    - sklearn.model_selection.train_test_split
-        * 데이터를 학습용과 테스트용으로 나눠줌
-        * 학습용 데이터셋, 테스트용 데이터셋, 학습용 레이블, 테스트용 레이블 순으로 반환
-        * 매개변수
-            # arrays: 데이터
-            # test_size: 테스트 데이터 크기
-            # train_size: 학습 데이터 크기
-                & 지정 안하면 1 - test_size
-                & test_size도 지정을 안하면 기본 0.75
-            # stratify: 데이터를 나눌 때 레이블을 고려할 것인지
-            # random_state: 나눌 때 난수 시드
 
 
 그 외
@@ -582,4 +575,70 @@
     - 훈련(피팅, fitting)
     - 평가(점수)
     - 예측
-
+10. 파이썬 함수 목록
+    - +가 붙은것은 멤버 함수
+    - pandas
+        * 공통 매개변수
+            # inplace: 기존 값을 변경할 것인지 여부(기본 False)
+        * pandas.DataFrame
+            # 데이터프레임 생성
+            # 매개변수
+                & data: 데이터 프레임에 들어갈 데이터들
+                & columns: 열 이름
+        * concat +
+            # 데이터 합침
+        * mean +
+            # 평균
+        * var +
+            # 분포
+        * std
+            # 표준편차
+        * sort_values +
+            # 값에 따라 행 정렬
+            # 매개변수
+                & by: 정렬 기준
+                & ascending: 오름차순 여부(기본 True)
+        * reset_index +
+            # 인덱스 초기화
+            # 주로 정렬 후 사용
+            # 매개변수
+                & drop: 기존 인덱스를 버릴 것인지, False시 값으로 반환, True시 버림(기본 False)
+        * pandas.read_csv
+            # csv 파일을 읽음
+            # 웹에 있는 파일을 읽는것도 가능
+        * head +
+            # 처음 n개 데이터를 출력
+            # 매개변수
+                & n: 출력할 데이터 개수
+        * tail +
+            # 마지막 n개 데이터 출력
+            # 매개변수
+                & n: 출력할 데이터 개수
+    - sklearn.model_selection.train_test_split
+        * 데이터를 학습용과 테스트용으로 나눠줌
+        * 학습용 데이터셋, 테스트용 데이터셋, 학습용 레이블, 테스트용 레이블 순으로 반환
+        * 매개변수
+            # arrays: 데이터
+            # test_size: 테스트 데이터 크기
+            # train_size: 학습 데이터 크기
+                & 지정 안하면 1 - test_size
+                & test_size도 지정을 안하면 기본 0.75
+            # stratify: 데이터를 나눌 때 레이블을 고려할 것인지
+            # random_state: 나눌 때 난수 시드
+    - matplotlib.pyplot
+        * scatter
+            # 그래프에 점 찍어줌
+            # 매개변수
+                & x: x위치
+                & y: y위치
+                & marker: 표시되는 그림 종류 설정
+                    $ 마커 종류는 https://pyvisuall.tistory.com/39 에서 확인
+        * xlabel
+            # x축 라벨 설정
+        * ylabel
+            # y축 라벨 설정
+        * from matplotlib import font_manager, rc;rc('font', family = font_manager.FontProperties(fname = "C:/Windows/Fonts/malgun.ttf").get_name())
+            # 라벨 한글 출력 설정
+        * show
+            # 그래프 표시
+            # 그래프에 그렸던 것들은 모두 초기화
